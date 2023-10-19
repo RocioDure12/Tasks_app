@@ -1,0 +1,27 @@
+# Ignorar archivos generados automáticamente
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Ignorar directorios y archivos de entornos virtuales
+venv/
+env/
+*.venv/
+*.env/
+.env
+*.egg-info/
+
+# Ignorar archivos de registros y salida
+*.log
+*.swp
+*.swo
+*.out
+
+# Ignorar archivos y directorios específicos de tu proyecto (ajusta según sea necesario)
+config.ini
+secret_key.txt
+data/
+uploads/
