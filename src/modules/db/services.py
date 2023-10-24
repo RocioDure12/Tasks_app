@@ -4,4 +4,6 @@ import sqlmodel
 import os
 
 class DBservices():
+    __engine:Engine=None
+    
     pass
