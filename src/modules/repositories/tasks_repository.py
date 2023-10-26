@@ -1,6 +1,7 @@
 from sqlmodel import Session
 from ..models.task import Task
 from ..services.db_services import DbServices
+from typing import List
 #crud
 
 class TasksRepository():
@@ -14,6 +15,9 @@ class TasksRepository():
             session.refresh(item)
         
         return item
+    
+    def read(self)->List[Task]:
+        pass
     
         
         
