@@ -1,7 +1,8 @@
-from sqlmodel import Session
+from sqlmodel import Session, SQLModel, select
 from ..models.task import Task
 from ..services.db_services import DbServices
 from typing import List
+
 
 #crud
 
@@ -18,7 +19,13 @@ class TasksRepository():
         return item
     
     def read(self)->List[Task]:
-        pass
+        with Session(self._db_services.get_engine()) as session:
+            statement=select(Task)
+            results=session.exec(statement)
+            items=results.all()
+        return items
+            
+            
     
         
         

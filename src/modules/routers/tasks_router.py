@@ -10,3 +10,4 @@ router = APIRouter(
 controller = TasksController()
 
 router.add_api_route('/', controller.create, methods=['POST'])
+router.add_api_route('/', controller.read, methods=['GET'])
