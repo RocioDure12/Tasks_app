@@ -38,7 +38,14 @@ class TasksRepository():
             session.refresh(item)
         
         return item
-        
+    
+    def delete(self,id:int):
+        with Session(self._db_services.get_engine()) as session:
+            statement=select(Task).where(Task.id == id)
+            item=session.exec(statement).one()
+            
+            session.delete(item)
+            session.commit()
             
             
             

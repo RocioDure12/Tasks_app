@@ -21,4 +21,4 @@ class TasksController():
         return self._tasks_repository.update(id, item)
         
     def delete(self, id:int):
-        return self._tasks_repository.delete()
+        return self._tasks_repository.delete(id)
