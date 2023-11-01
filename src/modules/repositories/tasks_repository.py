@@ -25,10 +25,10 @@ class TasksRepository():
             items=results.all()
         return items
     
-    def update(self,id:int, item:Task):
+    def update(self,id:int, update_item:Task):
         with Session(self._db_services.get_engine()) as session:
             statement=select(Task).where(Task.id == id)
-            update_item=session.exec(statement).one()
+            item=session.exec(statement).one()
             item.task_name=update_item.task_name
             item.description=update_item.description
             item.status=update_item.status
