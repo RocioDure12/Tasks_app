@@ -11,3 +11,5 @@ controller = TasksController()
 
 router.add_api_route('/', controller.create, methods=['POST'])
 router.add_api_route('/', controller.read, methods=['GET'])
+router.add_api_route('/', controller.update, methods=['PUT'])
+router.add_api_route('/', controller.delete, methods=['DELETE'])

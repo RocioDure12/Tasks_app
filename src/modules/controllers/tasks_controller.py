@@ -13,12 +13,11 @@ class TasksController():
         print(item)
         self._tasks_repository.create(item)
         
-    
     def read(self):
         return self._tasks_repository.read()
     
-    def update(self):
-        pass
+    def update(self,id:int, item:Task):
+        return self._tasks_repository.update()
         
-    def delete(self):
-        pass
+    def delete(self, id:int):
+        return self._tasks_repository.delete()
