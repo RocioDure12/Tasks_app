@@ -17,7 +17,7 @@ class TasksController():
         return self._tasks_repository.read()
     
     def update(self,id:int, item:Task):
-        return self._tasks_repository.update()
+        return self._tasks_repository.update(id, item)
         
     def delete(self, id:int):
         return self._tasks_repository.delete()

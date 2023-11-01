@@ -32,7 +32,13 @@ class TasksRepository():
             item.task_name=update_item.task_name
             item.description=update_item.description
             item.status=update_item.status
+            
+            session.add(item)
+            session.commit()
+            session.refresh(item)
+        
         return item
+        
             
             
             
