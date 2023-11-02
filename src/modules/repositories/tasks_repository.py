@@ -3,9 +3,6 @@ from ..models.task import Task
 from ..services.db_services import DbServices
 from typing import List
 
-
-#crud
-
 class TasksRepository():
     def __init__(self):
         self._db_services=DbServices()
