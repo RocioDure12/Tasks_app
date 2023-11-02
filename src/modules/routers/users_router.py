@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from ..controllers.users_controller import UsersController
 
 router = APIRouter(
-    prefix='/tasks'
+    prefix='/users'
 )
 
 controller=UsersController()
