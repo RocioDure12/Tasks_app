@@ -22,6 +22,13 @@ class UsersRepository:
             items=results.all()
         return items
     
+    def read_user(self, id:int):
+        with Session(self._db_services.get_engine()) as session:
+            statement=select(User).where(User.id == id)
+            result=session.exec(statement)
+            item=result
+        return item
+    
     def update(self,id:int, update_item:User):
         with Session(self._db_services.get_engine()) as session:
             statement=select(User).where(User.id == id)

@@ -11,6 +11,9 @@ class UsersController():
     def read(self):
         return self._users_repository.read()
     
+    def read_user(self, id:int):
+        return self._users_repository.read_user(id)
+    
     def update(self, id:int, item:User):
         return self._users_repository.update(id, item)
     
