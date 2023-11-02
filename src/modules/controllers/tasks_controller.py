@@ -16,6 +16,9 @@ class TasksController():
     def read(self):
         return self._tasks_repository.read()
     
+    def read_user(self, id:int):
+        return self._tasks_repository.read_task(id)
+    
     def update(self,id:int, item:Task):
         print("fsdfs")
         return self._tasks_repository.update(id, item)

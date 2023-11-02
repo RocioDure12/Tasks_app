@@ -22,6 +22,14 @@ class TasksRepository():
             items=results.all()
         return items
     
+    def read_task(self, id:int):
+        with Session(self._db_services.get_engine()) as session:
+            statement=select(Task).where(Task.id == id)
+            result=session.exec(statement)
+            item=result
+        return item
+            
+    
     def update(self,id:int, update_item:Task):
         with Session(self._db_services.get_engine()) as session:
             statement=select(Task).where(Task.id == id)
