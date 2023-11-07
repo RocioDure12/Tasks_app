@@ -26,6 +26,10 @@ class UserServices:
         
         return None
     
+    def handle_authentication(self, username:str, plain_password:str):
+        
+        pass
+    
     def create_token(self):
         pass
     
