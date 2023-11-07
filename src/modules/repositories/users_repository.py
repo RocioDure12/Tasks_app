@@ -30,8 +30,16 @@ class UsersRepository:
         with Session(self._db_services.get_engine()) as session:
             statement=select(User).where(User.id == id)
             result=session.exec(statement)
-            item=result
+            item=result.one_or_none()
         return item
+    
+    def read_by_username(self, username):
+        with Session(self._db_services.get_engine()) as session:
+            statement=select(User).where(User.user_name == username)
+            result=session.exec(statement)
+            item=result.one_or_none()
+        return item
+             
     
     def update(self,id:int, update_item:User):
         with Session(self._db_services.get_engine()) as session:
