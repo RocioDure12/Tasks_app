@@ -2,12 +2,16 @@ from sqlmodel import Session, SQLModel, select
 from ..models.user import User
 from ..services.db_services import DbServices
 from typing import List
+from ..services.users_services import UserServices
 
 class UsersRepository:
     def __init__(self):
         self._db_services=DbServices()
+        self._users_services=UserServices()
         
     def create(self, item:User):
+        hashed_password=self._users_services.hash_password(item.password)
+        item.password=hashed_password
         with Session(self._db_services.get_engine()) as session:
             session.add(item)
             session.commit()
