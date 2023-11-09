@@ -7,6 +7,7 @@ from fastapi import HTTPException, status
 from ..models.user import User
 from datetime import timedelta, datetime
 from jose import JWTError, jwt
+import os
 
 
 
@@ -63,9 +64,16 @@ class UserServices:
         )
         return encoded_jwt   
     
-    def create_access_token(self):
-        pass
+    def create_access_token(self, user:User, scopes:list[str]):
+        return self.create_token(user,
+                                 scopes,
+                                 expiration_minutes=os.getenv(f'JWT_ACCESS_TOKEN_EXPIRE_MINUTES'),
+                                 token_secret=os.getenv(f'JWT_ACCESS_TOKEN_SECRET'),
+                                 token_algorithm=os.getenv(f'JWT_ACCESS_TOKEN_ALGORITHM')
+                                )
+                                 
     
+        
     def create_refresh_token():
         pass
     
