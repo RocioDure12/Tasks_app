@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from ..services.db_services import DbServices
 from sqlmodel import Session,select
 from ..repositories.users_repository import UsersRepository
+from fastapi import HTTPException, status
 
 class UserServices:
     
@@ -27,8 +28,15 @@ class UserServices:
         return None
     
     def handle_authentication(self, username:str, plain_password:str):
+        user=self.authenticate_user(username, plain_password)
+        if not user:
+            raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        ) 
         
-        pass
+        
     
     def create_token(self):
         pass

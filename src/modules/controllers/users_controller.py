@@ -26,8 +26,7 @@ class UsersController():
         return self._users_repository.delete(id)
     
     def login_user(self,form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
-        #mover AU(authenticate_user) a handle_authentication(funcion que maneje toda la logica de auth)
-        return self._users_services.authenticate_user(form_data.username, form_data.password)
+        return self._users_services.handle_authentication(form_data.username, form_data.password)
         
         
     
