@@ -4,6 +4,8 @@ from ..services.db_services import DbServices
 from sqlmodel import Session,select
 from ..repositories.users_repository import UsersRepository
 from fastapi import HTTPException, status
+from ..models.user import User
+from datetime import timedelta, datetime
 
 class UserServices:
     
@@ -36,10 +38,20 @@ class UserServices:
             headers={"WWW-Authenticate": "Bearer"},
         ) 
         
-        
-    
-    def create_token(self):
-        pass
+    def create_token(self,
+                     user:User, 
+                     scopes:list[str],
+                     expiration_minutes:int,
+                     secret:str,
+                     algorithm:str):
+        expires_delta=timedelta(minutes=expiration_minutes)
+        expiration_date=datetime.utcnow() + expires_delta
+        data_to_encode = {
+            "iat":datetime.utcnow(),
+            "sub":user.user_name,
+            "exp":expiration_date,
+            "scopes":scopes
+        }
     
     def create_access_token(self):
         pass
