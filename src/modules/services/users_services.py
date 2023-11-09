@@ -6,6 +6,9 @@ from ..repositories.users_repository import UsersRepository
 from fastapi import HTTPException, status
 from ..models.user import User
 from datetime import timedelta, datetime
+from jose import JWTError, jwt
+
+
 
 class UserServices:
     
@@ -53,7 +56,7 @@ class UserServices:
             "scopes":scopes
         }
                 
-        encoded_jwt = self._jwt_services.encode(
+        encoded_jwt = jwt.encode(
             data_to_encode,
             token_secret, 
             algorithm=token_algorithm
