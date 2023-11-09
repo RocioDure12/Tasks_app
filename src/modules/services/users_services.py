@@ -8,7 +8,7 @@ from ..models.user import User
 from datetime import timedelta, datetime
 from jose import JWTError, jwt
 import os
-
+from ..models.auth_response import AuthResponse
 
 
 class UserServices:
@@ -18,8 +18,8 @@ class UserServices:
         self._oauth2_scheme=OAuth2PasswordBearer(tokenUrl="token")
         self._db_services=DbServices()
         self._users_repository=UsersRepository()
-        
-    
+   
+
     def hash_password(self, plain_password):
         return self._password_context.hash(plain_password)
     
@@ -43,6 +43,8 @@ class UserServices:
         
         access_token=self.create_access_token(user, [],)
         refresh_token=self.create_refresh_token(user)
+        
+        return AuthResponse(access_token=access_token, refresh_token=refresh_token)
              
         
     def create_token(self,
