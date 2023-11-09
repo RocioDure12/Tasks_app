@@ -39,8 +39,11 @@ class UserServices:
             raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        ) 
+            headers={"WWW-Authenticate": "Bearer"},)
+        
+        access_token=self.create_access_token(user, [],)
+        refresh_token=self.create_refresh_token(user)
+             
         
     def create_token(self,
                      user:User, 
@@ -74,8 +77,13 @@ class UserServices:
                                  
     
         
-    def create_refresh_token():
-        pass
+    def create_refresh_token(self, user:User):
+        return self.create_token(user,
+                                 [],
+                                 expiration_minutes=os.getenv(f'JWT_REFRESH_TOKEN_EXPIRE_MINUTES'),
+                                 token_secret=os.getenv(f'JWT_REFRESH_TOKEN_SECRET'),
+                                 token_algorithm=os.getenv(f'JWT_REFRESH_TOKEN_ALGORITHM')
+                                 )
     
     
     
