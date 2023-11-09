@@ -42,8 +42,8 @@ class UserServices:
                      user:User, 
                      scopes:list[str],
                      expiration_minutes:int,
-                     secret:str,
-                     algorithm:str):
+                     token_secret:str,
+                     token_algorithm:str):
         expires_delta=timedelta(minutes=expiration_minutes)
         expiration_date=datetime.utcnow() + expires_delta
         data_to_encode = {
@@ -52,6 +52,13 @@ class UserServices:
             "exp":expiration_date,
             "scopes":scopes
         }
+                
+        encoded_jwt = self._jwt_services.encode(
+            data_to_encode,
+            token_secret, 
+            algorithm=token_algorithm
+        )
+        return encoded_jwt   
     
     def create_access_token(self):
         pass
