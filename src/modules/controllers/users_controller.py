@@ -3,12 +3,12 @@ from ..models.user import User
 from fastapi.security import  OAuth2PasswordRequestForm
 from typing import Annotated
 from fastapi import Depends
-from ..services.users_services import UserServices
+from ..services.users_services import UsersServices
 
 class UsersController():
     def __init__(self):
         self._users_repository=UsersRepository()
-        self._users_services=UserServices()
+        self._users_services=UsersServices()
     
     def create(self, item:User):
         return self._users_repository.create(item)
