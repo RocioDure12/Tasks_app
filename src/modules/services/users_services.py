@@ -48,7 +48,7 @@ class UsersServices:
                      expiration_minutes:int,
                      token_secret:str,
                      token_algorithm:str):
-        expires_delta=timedelta(minutes=expiration_minutes)
+        expires_delta=timedelta(minutes=int(expiration_minutes))
         expiration_date=datetime.utcnow() + expires_delta
         data_to_encode = {
             "iat":datetime.utcnow(),
