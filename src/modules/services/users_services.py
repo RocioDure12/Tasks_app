@@ -2,7 +2,7 @@ from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from ..services.db_services import DbServices
 from sqlmodel import Session,select
-from ..repositories.users_repository import UsersRepository
+from ..repositories import users_repository
 from fastapi import HTTPException, status
 from ..models.user import User
 from datetime import timedelta, datetime
@@ -11,13 +11,13 @@ import os
 from ..models.auth_response import AuthResponse
 
 
-class UserServices:
+class UsersServices:
     
     def __init__(self):
         self._password_context=CryptContext(schemes=["bcrypt"], deprecated="auto")
         self._oauth2_scheme=OAuth2PasswordBearer(tokenUrl="token")
         self._db_services=DbServices()
-        self._users_repository=UsersRepository()
+        self._users_repository= users_repository.UsersRepository()
    
 
     def hash_password(self, plain_password):
