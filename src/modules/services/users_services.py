@@ -87,7 +87,44 @@ class UsersServices:
     def check_access_token(security_scopes:SecurityScopes,
                            token:Annotated[str, Depends(oauth2_scheme)]):
         print(token)
-        return None
+        return UsersServices.check_token(
+                                security_scopes,
+                                token=token,
+                                jwt_secret=os.getenv(f'JWT_ACCESS_TOKEN_SECRET'),
+                                jwt_algorithm=os.getenv(f'JWT_ACCESS_TOKEN_ALGORITHM')
+                                )
+    
+    @staticmethod
+    def check_token(security_scopes:SecurityScopes,
+                            token:str,
+                            jwt_secret:str,
+                            jwt_algorithm:str
+            
+                            
+                            ):
+        if security_scopes.scopes:
+            authenticate_value = f'Bearer scope="{security_scopes.scope_str}"'
+        else:
+            authenticate_value = "Bearer"
+            
+        credentials_exception = HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            headers={"WWW-Authenticate": authenticate_value},
+        )
+        print(token)
+        try:
+            payload = jwt.decode(
+                token, 
+                jwt_secret, 
+                algorithms=[jwt_algorithm])
+            username:str = payload.get('sub')
+            if username is None:
+                raise credentials_exception
+            token_scopes:list[str] = payload.get("scopes", [])
+        except JWTError:
+            raise credentials_exception
+    
+    
       
     
     
