@@ -1,9 +1,10 @@
 from passlib.context import CryptContext
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer,SecurityScopes
+from typing import Annotated
 from ..services.db_services import DbServices
 from sqlmodel import Session,select
 from ..repositories import users_repository
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Depends
 from ..models.user import User
 from datetime import timedelta, datetime
 from jose import JWTError, jwt
@@ -11,11 +12,11 @@ import os
 from ..models.auth_response import AuthResponse
 from .password_services import PasswordServices
 
-
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 class UsersServices:
     
     def __init__(self):
-        self._oauth2_scheme=OAuth2PasswordBearer(tokenUrl="token")
+        #self._oauth2_scheme=OAuth2PasswordBearer(tokenUrl="token")
         self._db_services=DbServices()
         self._users_repository= users_repository.UsersRepository()
         self._password_services=PasswordServices()
@@ -81,6 +82,13 @@ class UsersServices:
                                  token_secret=os.getenv(f'JWT_REFRESH_TOKEN_SECRET'),
                                  token_algorithm=os.getenv(f'JWT_REFRESH_TOKEN_ALGORITHM')
                                  )
+    
+    @staticmethod
+    def check_access_token(security_scopes:SecurityScopes,
+                           token:Annotated[str, Depends(oauth2_scheme)]):
+        print(token)
+        return None
+      
     
     
     

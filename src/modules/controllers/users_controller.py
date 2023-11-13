@@ -2,8 +2,9 @@ from ..repositories.users_repository import UsersRepository
 from ..models.user import User
 from fastapi.security import  OAuth2PasswordRequestForm
 from typing import Annotated
-from fastapi import Depends
+from fastapi import Depends, Security
 from ..services.users_services import UsersServices
+
 
 class UsersController():
     def __init__(self):
@@ -13,7 +14,10 @@ class UsersController():
     def create(self, item:User):
         return self._users_repository.create(item)
     
-    def read(self):
+    def read(self, user:Annotated[User,
+                                  Security(UsersServices.check_access_token,
+                                           scopes=['users:read'])],
+             ):
         return self._users_repository.read()
     
     def read_user(self, id:int):
