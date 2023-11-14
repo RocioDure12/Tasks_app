@@ -84,17 +84,6 @@ class UsersServices:
                                  )
     
     @staticmethod
-    def check_access_token(security_scopes:SecurityScopes,
-                           token:Annotated[str, Depends(oauth2_scheme)]):
-        print(token)
-        return UsersServices.check_token(
-                                security_scopes,
-                                token=token,
-                                jwt_secret=os.getenv(f'JWT_ACCESS_TOKEN_SECRET'),
-                                jwt_algorithm=os.getenv(f'JWT_ACCESS_TOKEN_ALGORITHM')
-                                )
-    
-    @staticmethod
     def check_token(security_scopes:SecurityScopes,
                             token:str,
                             jwt_secret:str,
@@ -123,6 +112,18 @@ class UsersServices:
             token_scopes:list[str] = payload.get("scopes", [])
         except JWTError:
             raise credentials_exception
+        
+    @staticmethod
+    def check_access_token(security_scopes:SecurityScopes,
+                           token:Annotated[str, Depends(oauth2_scheme)]):
+        print(token)
+        return UsersServices.check_token(
+                                security_scopes,
+                                token=token,
+                                jwt_secret=os.getenv(f'JWT_ACCESS_TOKEN_SECRET'),
+                                jwt_algorithm=os.getenv(f'JWT_ACCESS_TOKEN_ALGORITHM')
+                                )
+    
     
     
       
