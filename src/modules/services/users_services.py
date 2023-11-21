@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer,SecurityScopes
 from typing import Annotated
 from ..services.db_services import DbServices
 from sqlmodel import Session,select
-from ..repositories import users_repository
+from ..repositories.users_repository import UsersRepository
 from fastapi import HTTPException, status, Depends
 from ..models.user import User
 from datetime import timedelta, datetime
@@ -13,12 +13,13 @@ from ..models.auth_response import AuthResponse
 from .password_services import PasswordServices
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
 class UsersServices:
     
     def __init__(self):
         #self._oauth2_scheme=OAuth2PasswordBearer(tokenUrl="token")
         self._db_services=DbServices()
-        self._users_repository= users_repository.UsersRepository()
+        self._users_repository= UsersRepository()
         self._password_services=PasswordServices()
    
     
@@ -100,19 +101,28 @@ class UsersServices:
             status_code=status.HTTP_401_UNAUTHORIZED,
             headers={"WWW-Authenticate": authenticate_value},
         )
-        print(token)
+
         try:
             payload = jwt.decode(
                 token, 
                 jwt_secret, 
                 algorithms=[jwt_algorithm])
-            username:str = payload.get('sub')
-            if username is None:
-                raise credentials_exception
-            token_scopes:list[str] = payload.get("scopes", [])
+
         except JWTError:
             raise credentials_exception
         
+        username:str = payload.get('sub')
+        if username is None:
+            raise credentials_exception
+        #token_scopes:list[str] = payload.get("scopes", [])
+        
+        user=UsersServices.check_user_validity(username)
+        if user is not None:
+            return user
+        else:
+            raise credentials_exception
+        
+            
     @staticmethod
     def check_access_token(security_scopes:SecurityScopes,
                            token:Annotated[str, Depends(oauth2_scheme)]):
@@ -123,8 +133,11 @@ class UsersServices:
                                 jwt_secret=os.getenv(f'JWT_ACCESS_TOKEN_SECRET'),
                                 jwt_algorithm=os.getenv(f'JWT_ACCESS_TOKEN_ALGORITHM')
                                 )
-    
-    
+        
+    @staticmethod
+    def check_user_validity( username:str):
+        # TODO: chequear si esta deshabilitado
+        return UsersRepository().read_by_username(username)
     
       
     
