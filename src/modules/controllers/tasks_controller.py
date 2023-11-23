@@ -4,12 +4,18 @@
 from ..repositories.tasks_repository import TasksRepository
 from ..models.task import Task
 from typing import List
+from ..services.users_services import UsersServices
+from fastapi import Security
+from typing import Annotated
+from ..models.user import User
 
 class TasksController():
     def __init__(self):
         self._tasks_repository=TasksRepository()
         
-    def create(self,item:Task):
+    def create(self,item:Task, user:Annotated[User,
+                                  Security(UsersServices.check_access_token,
+                                           scopes=['tasks:create'])]):
         print(item)
         self._tasks_repository.create(item)
         
