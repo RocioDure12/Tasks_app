@@ -12,8 +12,8 @@ db=DbServices()
 app.include_router(tasks_router)
 app.include_router(users_router)
 
-"""
-def create_tables():
+
+"""def create_tables():
     SQLModel.metadata.create_all(db.get_engine()) 
 
 create_tables()
