@@ -12,7 +12,8 @@ class Task(SQLModel, table=True):
     description:str
     status:bool
     deleted_at:Optional[datetime] = None
-    created_at:Optional[datetime] = Field(default_factory=datetime.utcnow,nullable=False)
+    created_at:datetime = Field(default_factory=datetime.utcnow,nullable=False)
     updated_at:Optional[datetime] = None
-    user_id:Optional[int]=Field(default=None, foreign_key="user.id")
+    date_time:datetime
+    user_id:int=Field(foreign_key="user.id")
     user:Optional["User"]=Relationship(back_populates="tasks")

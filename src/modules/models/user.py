@@ -16,7 +16,7 @@ class User(SQLModel, table=True):
     user_name:str
     password:str
     deleted_at:Optional[datetime] = None
-    created_at:Optional[datetime] = Field(default_factory=datetime.utcnow,nullable=False)
+    created_at:datetime= Field(default_factory=datetime.utcnow,nullable=False)
     updated_at:Optional[datetime] = None
     tasks: List["Task"]=Relationship(back_populates="user")
     
