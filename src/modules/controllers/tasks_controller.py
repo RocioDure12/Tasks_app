@@ -16,7 +16,7 @@ class TasksController():
     def create(self,item:Task, user:Annotated[User,
                                   Security(UsersServices.check_access_token,
                                            scopes=['tasks:create'])]):
-        print(item)
+        item.user_id=user.id
         self._tasks_repository.create(item)
         
     def read(self):
